@@ -89,7 +89,7 @@ normative:
 informative:
 
 --- abstract
-This document specifies a non-critical X.509 v3 certificate extension that conveys the HTTPS URI of a Call Placement Service (CPS) associated with the telephone numbers authorized in a STIR Delegate Certificate. The extension enables originators and verifiers of STIR PASSporTs to discover, with a single certificate lookup, where Out-of-Band (OOB) PASSporTs can be retrieved. The mechanism removes bilateral CPS provisioning, allows ecosystem-scale discovery backed by STI Certificate Transparency (STI-CT), and is fully backward compatible with existing STIR certificates and OOB APIs.
+This document specifies a non-critical X.509 v3 certificate extension that conveys the HTTPS URI of a Call Placement Service (CPS) associated with the telephone numbers authorized in a STIR Certificate. The extension enables originators and verifiers of STIR PASSporTs to discover, with a single certificate lookup, where Out-of-Band (OOB) PASSporTs can be retrieved. The mechanism only provides a new way to discover the URI of CPS endpoint and is fully backward compatible with existing STIR certificates and OOB APIs.
 --- middle
 
 # Introduction
@@ -183,12 +183,10 @@ The extension MUST be marked non-critical so that implementations that do not un
 
 ## Processing Rules
 
-- A STIR Authentication Service (AS), defined in {{RFC8224}}, that holds a Delegate Certificate containing id-pe-oobURI SHOULD publish OOB PASSporTs to the indicated CPS.
+- A STIR Authentication Service (AS), defined in {{RFC8224}}, that holds a Certificate containing id-pe-oobURI SHOULD publish OOB PASSporTs to the indicated CPS.
 - A STIR Verification Service (VS), defined in {{RFC8224}} that receives a PASSporT signed by such a certificate MAY derive the CPS endpoint by reading the extension, or MAY query an external discovery directory that is populated by monitoring the STI-CT logs.
-- If the extension and an external directory disagree, verifiers SHOULD treat the call as unverifiable unless local policy states otherwise.
+- If the extension and an external directory disagree, the resolution is a matter of local policy.
 - A STIR Verification Service (VS) that receives a SIP request without an in-band PASSporT MAY use the calling party's identity (e.g., from the From or P-Asserted-Identity headers) to query a local directory or STI-CT monitor to locate the associated certificate. Once the certificate is located, the VS can extract the OOB URI extension to discover the Call Placement Service and retrieve the PASSporT.
-
-Relying parties SHOULD ensure that the certificate containing the CPS URI is present in a trusted Certificate Transparency log before using the URI for OOB operations.
 
 # Use with Out-of-Band
 
@@ -217,15 +215,17 @@ Figure 1 shows the message flow when the extension is present:
 Figure 1
 ~~~~~~~~~~~~~
 
-1. The enterprise obtains a Delegate Certificate containing the CPS URI. The CA submits the certificate to STI-CT.
+1. The enterprise obtains an STI certificate (either a STIR certificate or delegate certificate) containing the CPS URI. The CA submits the certificate to STI-CT.
 2a. The AS sends a SIP INVITE toward the terminating network. The INVITE may or may not carry an in-band PASSporT.
 2b. The OOB-AS submits the PASSporT to the CPS indicated by the extension.
 3. The terminating VS retrieves the PASSporT from the CPS.
 4. The VS (or a monitoring component) discovers the CPS URI by monitoring CT logs for certificates containing the extension.
 
+Note: Although the figure depicts an enterprise scenario, the same mechanism applies when a service provider holds an STI certificate with the CPS URI extension.
+
 # Operational Considerations
 
-- Logging: CAs issuing certificates with id-pe-oobURI MUST submit the certificate to STI-CT logs.
+- Logging: CAs issuing certificates with id-pe-oobURI MAY submit the certificate to STI-CT logs.
 - Migration overlap: When changing a CPS endpoint, operators SHOULD ensure that both the old and new CPS URIs are operational during the transition. Specifically, the operator SHOULD issue a new certificate containing the updated CPS URI, confirm its presence in CT logs, and only then decommission the old CPS endpoint. The old certificate's CPS URI SHOULD remain functional until the old certificate expires or is revoked.
 - Propagation delay: Relying parties that discover CPS URIs through CT log monitoring will experience a delay between certificate issuance and CPS URI availability. This delay depends on CT log inclusion time and monitor polling intervals. Operators SHOULD account for this delay when planning CPS migrations by maintaining the old endpoint for a period beyond the expected propagation time.
 
@@ -234,7 +234,7 @@ Figure 1
 The CPS URI certificate extension introduces a mechanism for associating telephone number resources with CPS endpoints through STI certificates. The following considerations apply:
 
 - Misuse or Misissuance: A malicious or misconfigured entity may include a CPS URI in a certificate without authorization for the corresponding TNAuthList resources. Certification Authorities (CAs) MUST validate that the entity requesting the certificate has authority over the listed numbers or SPCs before issuing the certificate.
-- URI Integrity: The CPS URI is not digitally signed independently of the certificate. Relying parties MUST validate the entire certificate chain and ensure the certificate is properly logged in a Certificate Transparency log before using the URI.
+- URI Integrity: The CPS URI is not digitally signed independently of the certificate. Relying parties MUST validate the entire certificate chain before relying on the URI.
 - Certificate Expiry and Revocation: CPS URI information may become outdated due to certificate expiration or revocation. Relying parties SHOULD evaluate certificate validity and revocation status when interpreting CPS mappings.
 - Log Availability and Monitoring: Relying parties that depend on CT log monitoring for CPS discovery SHOULD monitor multiple trusted logs to ensure timely detection of CPS declarations and prevent omission attacks.
 - Information Exposure: The publication of CPS URIs in publicly logged certificates may reveal deployment metadata. This exposure is consistent with existing STIR delegate certificate practices and does not introduce additional privacy risk beyond what is already present in TNAuthList usage.
