@@ -91,8 +91,6 @@ informative:
 
 --- abstract
 This document specifies a non-critical X.509 v3 certificate extension that conveys the HTTPS URI of a PASSporT Placement Service (PPS) associated with the telephone numbers authorized in a STIR Certificate. The extension enables originators and verifiers of STIR PASSporTs to discover, with a single certificate lookup, where Out-of-Band (OOB) PASSporTs can be retrieved. The mechanism only provides a new way to discover the URI of a PPS endpoint and is fully backward compatible with existing STIR certificates and OOB APIs.
-
-This document was previously published as draft-sliwa-stir-cert-cps-ext and continues that work. The service previously called a Call Placement Service (CPS) has been renamed to PASSporT Placement Service (PPS) to avoid acronym collision with Certification Practice Statement (CPS) as used in RFC 8226 and certificate policy practice, and because the service places and serves PASSporTs and is intended to apply to applications beyond telephone calls. The extension and its identifiers have been renamed accordingly.
 --- middle
 
 # Introduction
@@ -251,6 +249,19 @@ IANA is requested to assign a new object identifier (OID) for the PPS URI certif
 - Reference: [RFC THIS]
 
 --- back
+
+# Changes from draft-sliwa-stir-cert-cps-ext
+{:numbered="false"}
+
+Note to the RFC Editor: please remove this section before publication.
+
+This document was previously published as draft-sliwa-stir-cert-cps-ext and continues that work. The principal change is a rename of the placement service and the extension it identifies:
+
+- The service previously called a Call Placement Service (CPS) is renamed to PASSporT Placement Service (PPS). This avoids the acronym collision with Certification Practice Statement (CPS) as used in {{RFC8226}} and certificate policy practice, and reflects that the service places and serves PASSporTs and is intended to apply to applications beyond telephone calls.
+- The certificate extension and its ASN.1 and OID identifiers are renamed accordingly: id-pe-oobURI becomes id-pe-ppsURI, the OOBURIs type becomes PPSURIs, and the OOB-CERT-EXTENSION module becomes PPS-CERT-EXTENSION. The on-the-wire OID value remains to be assigned by IANA and is unaffected by the rename.
+- The document title, abbreviation, and filename are updated to reflect the new name.
+
+There are no other technical changes from draft-sliwa-stir-cert-cps-ext.
 
 # Acknowledgments
 {:numbered="false"}
