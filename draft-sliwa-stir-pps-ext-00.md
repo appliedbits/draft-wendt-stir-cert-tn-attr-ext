@@ -253,7 +253,7 @@ IANA is requested to assign a new object identifier (OID) for the PPS URI certif
 # Changes from draft-sliwa-stir-cert-cps-ext
 {:numbered="false"}
 
-Note to the RFC Editor: please remove this section before publication.
+This is an editorial section that tracks changes across revisions and is intended to be removed before any eventual publication.
 
 This document was previously published as draft-sliwa-stir-cert-cps-ext and continues that work. The principal change is a rename of the placement service and the extension it identifies:
 
