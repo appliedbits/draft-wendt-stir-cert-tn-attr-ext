@@ -6,7 +6,7 @@ title: "PASSporT Placement Service (PPS) URI Certificate Extension for STI Certi
 abbrev: "PPS URI Certificate Extension"
 category: std
 
-docname: draft-sliwa-stir-pps-ext-00
+docname: draft-sliwa-stir-cert-pps-ext-00
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date:
