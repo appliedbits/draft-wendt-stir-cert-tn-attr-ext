@@ -1,12 +1,12 @@
 ---
 ###
-# PASSporT Placement Service (PPS) URI Certificate Extension for STIR/SHAKEN Certificates
+# TN Attribute Certificate Extension for STIR/SHAKEN Certificates
 ###
-title: "PASSporT Placement Service (PPS) URI Certificate Extension for STI Certificates"
-abbrev: "PPS URI Certificate Extension"
+title: "TN Attribute Certificate Extension for STI Certificates"
+abbrev: "TN Attribute Certificate Extension"
 category: std
 
-docname: draft-sliwa-stir-cert-pps-ext-00
+docname: draft-wendt-stir-cert-tn-attr-ext-00
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date:
@@ -28,13 +28,14 @@ venue:
 
 author:
  -
-    fullname: Rob &#x015A;liwa
-    organization: Somos Inc.
-    email: robjsliwa@gmail.com
- -
     fullname: Chris Wendt
     organization: Somos Inc.
     email: chris@appliedbits.com
+ -
+    fullname: Rob &#x015A;liwa
+    organization: Somos Inc.
+    email: robjsliwa@gmail.com
+
 
 normative:
   RFC3986:
