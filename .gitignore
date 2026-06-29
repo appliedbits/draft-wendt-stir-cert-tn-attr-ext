@@ -21,12 +21,3 @@ package-lock.json
 report.xml
 !requirements.txt
 build.sh
-draft-sliwa-stir-cert-cps-ext.xml
-draft-sliwa-stir-cert-cps-ext.txt
-draft-sliwa-stir-cert-cps-ext.code*
-draft-sliwa-stir-cert-cps-ext-0*
-draft-sliwa-stir-cert-pps-ext.xml
-draft-sliwa-stir-cert-pps-ext.txt
-draft-sliwa-stir-cert-pps-ext.code*
-draft-sliwa-stir-cert-pps-ext-0*
-draft-sliwa-stir-cert-pps-ext-1*
