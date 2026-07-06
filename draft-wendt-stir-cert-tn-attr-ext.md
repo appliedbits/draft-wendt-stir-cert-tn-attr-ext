@@ -92,8 +92,8 @@ normative:
       ITU-T: Recommendation X.683, ISO/IEC 8824-4
 
 informative:
+  RFC9888:
   I-D.ietf-stir-certificate-transparency:
-  I-D.ietf-stir-servprovider-oob:
 
 --- abstract
 This document specifies a non-critical X.509 v3 certificate extension that conveys a set of self-asserted attributes describing the telephone numbers identified in the certificate's TNAuthList. The attributes are declared by the holder of the certificate about its own telephone numbers and require no separate authority token, because they describe or constrain only those numbers and grant no authority to any other party. The extension defines an extensible framework with an IANA registry of attribute types and seeds that registry with four types: a PASSporT Placement Service (PPS) URI, a do-not-originate indication, a do-not-originate-messaging indication, and a set of authorized originating providers. Relying parties use these self-declarations as policy signals, treating communications that do not conform to them as candidates for blocking. The mechanism is backward compatible with existing STIR certificates.
@@ -121,7 +121,7 @@ This document defines a certificate extension data format. It is designed to com
 
 - {{RFC8226}} defines the TNAuthList extension that records the authority over which these attributes are asserted, and {{RFC9060}} defines delegate certificates that carry such authority.
 - {{RFC8816}} defines the Out-of-Band (OOB) architecture and the PASSporT Placement Service concept, which it names the Call Placement Service (CPS). The PPS URI attribute defined here points to such a service.
-- {{I-D.ietf-stir-servprovider-oob}} describes a service-provider OOB deployment model and the possibility of embedding placement service information in STIR certificates.
+- {{RFC9888}} describes a service-provider OOB deployment model and the possibility of embedding placement service information in STIR certificates.
 - {{I-D.ietf-stir-certificate-transparency}} defines STI Certificate Transparency logs, which are one mechanism by which certificates carrying this extension may be observed.
 
 Retrieval of these attributes keyed by telephone number is out of scope for this document. Mechanisms for distributing and querying do-not-originate information by telephone number are already deployed, and the same distribution and query mechanisms are expected to carry the attributes defined here. In all cases the certificate is the authoritative source of the attribute values, and the distribution layer conveys them; see {{conveyance}}.
