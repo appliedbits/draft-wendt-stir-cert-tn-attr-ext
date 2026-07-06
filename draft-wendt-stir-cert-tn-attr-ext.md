@@ -42,6 +42,7 @@ author:
 normative:
   RFC3986:
   RFC5280:
+  RFC5912:
   RFC8224:
   RFC8225:
   RFC8226:
@@ -128,7 +129,7 @@ Retrieval of these attributes keyed by telephone number is out of scope for this
 
 # The id-pe-tnAttributes Certificate Extension {#extension}
 
-This {{X.509}} extension is non-critical, applicable only to end-entity certificates, and defined with ASN.1 {{X.680}} {{X.681}} {{X.682}} {{X.683}} later in this section.
+This extension is an X.509 {{X.509}} v3 certificate extension, profiled for the Internet PKI by {{RFC5280}}. It is non-critical, applicable only to end-entity certificates, and defined later in this section with ASN.1 {{X.680}} {{X.681}} {{X.682}} {{X.683}} using the PKIX ASN.1 modules of {{RFC5912}}.
 
 The extension is intended for use in end-entity STI certificates {{RFC8226}} and delegate certificates {{RFC9060}} whose TNAuthList authorizes specific telephone numbers or SPCs. It carries one or more typed attributes, each a self-assertion by the certificate holder about those numbers or SPCs. In this document, the telephone numbers or SPCs identified in the certificate's TNAuthList are referred to as the covered numbering resources.
 
@@ -146,7 +147,7 @@ The container guarantees only provenance: every attribute in it was asserted by 
 
 ## ASN.1 Module Syntax
 
-The extension is identified by an object identifier (OID) assigned in the PKIX id-pe arc. Its value is a sequence of one or more typed attributes. Each attribute carries an integer type, which keys into the IANA "STIR TN Attribute Types" registry ({{iana}}), and a value whose syntax is defined by the registration for that type. The set of types is extensible: the extension marker in the object set below permits attributes of types not defined in this module to be carried and, if unrecognized, skipped. A specification that defines a new type registers it, with its value syntax, and adds it to the object set; existing implementations that do not recognize the new type are unaffected.
+The extension is identified by an object identifier (OID) assigned in the PKIX id-pe arc defined in {{RFC5280}}. Its value is a sequence of one or more typed attributes. Each attribute carries an integer type, which keys into the IANA "STIR TN Attribute Types" registry ({{iana}}), and a value whose syntax is defined by the registration for that type. The set of types is extensible: the extension marker in the object set below permits attributes of types not defined in this module to be carried and, if unrecognized, skipped. A specification that defines a new type registers it, with its value syntax, and adds it to the object set; existing implementations that do not recognize the new type are unaffected.
 
 ~~~~~~~~~~~~~
 TN-ATTRIBUTES-EXTN
@@ -162,17 +163,19 @@ IMPORTS
   FROM PKIX-CommonTypes-2009  -- RFC 5912
     { iso(1) identified-organization(3) dod(6) internet(1)
       security(5) mechanisms(5) pkix(7) id-mod(0)
-      id-mod-pkixCommon-02(57) } ;
+      id-mod-pkixCommon-02(57) }
+
+  id-pe
+  FROM PKIX1Explicit-2009  -- RFC 5912
+    { iso(1) identified-organization(3) dod(6) internet(1)
+      security(5) mechanisms(5) pkix(7) id-mod(0)
+      id-mod-pkix1-explicit-02(51) } ;
 
 -- TN Attributes Certificate Extension
 
 ext-TNAttributes EXTENSION ::= {
   SYNTAX TNAttributes
   IDENTIFIED BY id-pe-tnAttributes }
-
-id-pe OBJECT IDENTIFIER ::=
-  { iso(1) identified-organization(3) dod(6) internet(1)
-    security(5) mechanisms(5) pkix(7) 1 }
 
 id-pe-tnAttributes OBJECT IDENTIFIER ::= { id-pe TBD1 }
 
@@ -231,7 +234,7 @@ Note: The numeric module and OID assignments marked TBD are temporary. IANA will
 
 ## Criticality
 
-The extension MUST be marked non-critical so that implementations that do not understand it can still validate the certificate. An attribute that a relying party does not understand, or whose type is not in its supported set, is ignored.
+The extension MUST be marked non-critical, following the certificate extension processing rules of {{RFC5280}}, so that a relying party that does not recognize it can still validate the certificate. An attribute that a relying party does not understand, or whose type is not in its supported set, is ignored.
 
 # Attribute Types {#attribute-types}
 
